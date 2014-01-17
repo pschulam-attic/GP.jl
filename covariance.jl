@@ -13,6 +13,8 @@ function gpcov(kernel::CovarianceKernel,
             cv[i, j] = gpcov(kernel, v1[i], v2[j])
         end
     end
+
+    cv
 end
 
 type SquaredExponential <: CovarianceKernel
