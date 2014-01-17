@@ -19,16 +19,16 @@ function predict(gp::GaussianProcess,
     mu_in = zeros(n_in)
     mu_out = zeros(n_out)
 
-    sigma_in = gp_cov_outer(gp.kernel, x_in, x_in)
-    sigma_in += gp.noise * eye(n_in)
+    sigma_in = gpcov(gp.kernel, x_in, x_in)
+    sigma_in += gp.noise ^ 2 * eye(n_in)
     
-    sigma_out = gp_cov_outer(gp.kernel, x_out, x_out)
+    sigma_out = gpcov(gp.kernel, x_out, x_out)
 
-    sigma_in_out = gp_cov_outer(gp.kernel, x_in, x_out)
+    sigma_in_out = gpcov(gp.kernel, x_in, x_out)
     sigma_out_in = sigma_in_out'
 
     pred_mean = mu_out
-    pred_mean += sigma_out_in * inv(sigma_in) * x_in
+    pred_mean += sigma_out_in * inv(sigma_in) * y_in
 
     pred_var = sigma_out
     pred_var -= sigma_out_in * inv(sigma_in) * sigma_in_out
